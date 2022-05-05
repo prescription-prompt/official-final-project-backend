@@ -6,6 +6,7 @@ module.exports = [
     amount: 120,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '627380e26aeedd08eac2e80c',
+    notes: 'take with food',
   },
   {
     name: 'Atorvastatin',
@@ -14,6 +15,7 @@ module.exports = [
     amount: 20,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '627380e26aeedd08eac2e80c',
+    notes: 'take on an empty stomach',
   },
   {
     name: 'Amoxicillin',
@@ -22,6 +24,7 @@ module.exports = [
     amount: 60,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '627380e26aeedd08eac2e80c',
+    notes: 'avoid alcohol',
   },
   {
     userId: '62726fa13f248533ed2b0ec2',
@@ -31,6 +34,7 @@ module.exports = [
     amount: 28,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '62738196bf6f669fdd475591',
+    notes: 'stop taking once symptoms disappear',
   },
   {
     userId: '62726fa14e60820670882253',

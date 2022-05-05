@@ -6,6 +6,7 @@ module.exports = [
     amount: 20,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '6273852509e1e60b76e1ad23',
+    notes: 'take on an empty stomach',
   },
   {
     name: 'Amlodipine',
@@ -22,6 +23,7 @@ module.exports = [
     amount: 120,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '6273852509e1e60b76e1ad23',
+    notes: 'take with food',
   },
   {
     name: 'Metformin',
@@ -134,6 +136,7 @@ module.exports = [
     amount: 100,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '627385c4da1fa4b209978b50',
+    notes: 'avoid alcohol',
   },
   {
     name: 'Metoprolol',
@@ -150,6 +153,7 @@ module.exports = [
     amount: 120,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '627385d2ec2b4c5ebeb0bf70',
+    notes: 'take with food',
   },
   {
     name: 'Ibuprofen',
@@ -158,6 +162,7 @@ module.exports = [
     amount: 60,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '627385d8d7f4d9946a0317ca',
+    notes: 'take on an empty stomach',
   },
   {
     name: 'Metformin',
@@ -190,6 +195,7 @@ module.exports = [
     amount: 50,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '6273863529f35bf1ffd5de45',
+    notes: 'avoid alcohol',
   },
   {
     name: 'Metoprolol',
@@ -230,6 +236,7 @@ module.exports = [
     amount: 30,
     firstPromptTime: Math.floor(Date.now() / 1000),
     userId: '6273861e11076a16c3146846',
+    notes: 'take on an empty stomach',
   },
   {
     name: 'Codeine',
