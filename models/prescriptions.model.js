@@ -9,7 +9,7 @@ const prescriptionSchema = mongoose.Schema({
     required: [true, 'Please input first reminder time'],
     type: Number,
   },
-
+  notes: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   amount: { required: [true, 'Please input amount supplied'], type: Number },
 });
