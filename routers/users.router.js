@@ -3,7 +3,7 @@ const usersRouter = require('express').Router();
 
 usersRouter.get('/', controller.users.getUsers);
 
-usersRouter.get('/:id', controller.users.getUserById);
+usersRouter.get('/:email', controller.users.getUserByEmail);
 
 usersRouter.post('/', controller.users.postUser);
 
