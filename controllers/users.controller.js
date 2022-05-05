@@ -17,15 +17,35 @@ exports.postUser = async (req, res, next) => {
       password: req.body.password,
       email: req.body.email,
     });
-    res.status(200).json({ user });
+    res.status(201).json({ user });
   } catch (err) {
     next(err);
   }
 };
 
-exports.getUserById = async (req, res, next) => {
+exports.getUserByEmail = async (req, res, next) => {
   try {
-    console.log('test2');
+    const { email } = req.params;
+
+    const validUrl =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (!validUrl.test(email)) {
+      throw {
+        status: 400,
+        msg: `Invalid request`,
+      };
+    }
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      throw {
+        status: 404,
+        msg: `No user with ${email} found in the database`,
+      };
+    }
+
+    res.status(200).json({ user });
   } catch (err) {
     next(err);
   }
