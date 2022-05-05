@@ -4,6 +4,16 @@ exports.handleCustomErrors = (err, req, res, next) => {
   } else next(err);
 };
 
+exports.handleValidationErrors = (err, req, res, next) => {
+  if (err.name === 'ValidationError') {
+    let errors = {};
+    Object.keys(err.errors).forEach((key) => {
+      errors[key] = err.errors[key].message;
+    });
+    res.status(400).send({ errors });
+  } else next(err);
+};
+
 exports.handleServerErrors = (err, req, res, next) => {
   console.log(err);
   res.status(500).send({ msg: 'Internal Server Error' });

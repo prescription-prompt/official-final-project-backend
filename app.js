@@ -22,6 +22,7 @@ app.use((req, res) => {
 });
 
 app.use(errorHandlers.handleCustomErrors);
+app.use(errorHandlers.handleValidationErrors);
 app.use(errorHandlers.handleServerErrors);
 
 module.exports = app;

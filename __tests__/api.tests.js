@@ -104,3 +104,51 @@ describe('USERS TESTS', () => {
     });
   });
 });
+
+describe('PRESCRIPTION TESTS', () => {
+  describe('GET /prescriptions/:userId', () => {
+    test('Returns 200 status code and array of all prescriptions for the user with provided id', async () => {
+      const res = await request(app)
+        .get('/api/prescriptions/627380e26aeedd08eac2e80c')
+        .expect(200);
+      expect(res.body.prescriptions).toBeInstanceOf(Array);
+      expect(res.body.prescriptions.length).toBe(3);
+      res.body.prescriptions.forEach((prescription) => {
+        expect(prescription).toMatchObject({
+          _id: expect.any(String),
+          name: expect.any(String),
+          frequency: expect.any(Number),
+          dosage: expect.any(String),
+          amount: expect.any(Number),
+          firstPromptTime: expect.any(Number),
+          userId: '627380e26aeedd08eac2e80c',
+          notes: expect.any(String),
+        });
+      });
+    });
+    test('Returns 200 status code and an empty array if no prescriptions found in the database for the user with valid id', async () => {
+      const res = await request(app)
+        .get('/api/prescriptions/627381db9be1122140b91fbc')
+        .expect(200);
+      expect(res.body.prescriptions).toBeInstanceOf(Array);
+      expect(res.body.prescriptions.length).toBe(0);
+    });
+    test('Returns 400 status code if userId is not valid', async () => {
+      const { body } = await request(app)
+        .get(`/api/prescriptions/notValidId15`)
+        .expect(400);
+
+      expect(body.msg).toEqual('Invalid request');
+    });
+
+    test('Returns 404 status code if userId not in the database', async () => {
+      const { body } = await request(app)
+        .get(`/api/prescriptions/6274368fa87c3f460c56a251`)
+        .expect(404);
+
+      expect(body.msg).toEqual(
+        `No user with userId 6274368fa87c3f460c56a251 found in the database`
+      );
+    });
+  });
+});

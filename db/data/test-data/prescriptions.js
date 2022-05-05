@@ -27,7 +27,6 @@ module.exports = [
     notes: 'avoid alcohol',
   },
   {
-    userId: '62726fa13f248533ed2b0ec2',
     name: 'Ibuprofen',
     frequency: 7200,
     dosage: '150mg',
@@ -37,7 +36,6 @@ module.exports = [
     notes: 'stop taking once symptoms disappear',
   },
   {
-    userId: '62726fa14e60820670882253',
     name: 'Nefopam',
     frequency: 43200,
     dosage: '400mg',
@@ -46,7 +44,6 @@ module.exports = [
     userId: '62738196bf6f669fdd475591',
   },
   {
-    userId: '62726fa1af3cb7019466dba5',
     name: 'Naproxen',
     frequency: 7200,
     dosage: '50mg',
