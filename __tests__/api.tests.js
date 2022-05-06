@@ -243,13 +243,23 @@ describe('PRESCRIPTION TESTS', () => {
           'Cast to Number failed for value "twenty-eight" (type string) at path "amount"',
       });
     });
-
-    describe('DELETE /api/prescriptions/:id', () => {
-      test('Returns 204 status code and the prescription that was deleted', async () => {
-        const { body } = await request(app)
-          .delete('/api/prescriptions/6274fcb87c40e70244f0ff38')
-          .expect(204);
-      });
+  });
+  describe('DELETE /api/prescriptions/:id', () => {
+    test('Returns 204 status code and the prescription that was deleted', async () => {
+      const id = data.prescriptions[1]._id.toString();
+      const { body } = await request(app)
+        .delete(`/api/prescriptions/${id}`)
+        .expect(204);
+    });
+    test('Returns 400 status code if id is invalid', async () => {
+      const { body } = await request(app)
+        .delete(`/api/prescriptions/223344`)
+        .expect(400);
+    });
+    test('Returns 404 status code if id not in the database', async () => {
+      const { body } = await request(app)
+        .delete(`/api/prescriptions/627529debd8436b946d47e2c`)
+        .expect(404);
     });
   });
 });
