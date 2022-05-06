@@ -18,8 +18,8 @@ const seed = async ({ userData, prescriptionData }) => {
   await Prescription.deleteMany({});
   const users = await saveUser(userData);
   savedData.users = users;
-  const visits = await savePrescription(prescriptionData);
-  savedData.visits = visits;
+  const prescriptions = await savePrescription(prescriptionData);
+  savedData.prescriptions = prescriptions;
   return savedData;
 };
 

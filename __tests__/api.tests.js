@@ -5,11 +5,13 @@ const app = require('../app');
 const seed = require('../db/seed/seed');
 const { getMaxListeners } = require('../app');
 
-// let data;
+let data;
 
 beforeEach(async () => {
   await seed(testData)
-    .then((savedData) => (data = savedData))
+    .then((savedData) => {
+      data = savedData;
+    })
     .catch((err) => console.log(err));
 });
 
