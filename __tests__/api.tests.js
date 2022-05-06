@@ -135,10 +135,10 @@ describe('USERS TESTS', () => {
 });
 
 describe('PRESCRIPTION TESTS', () => {
-  describe('GET /prescriptions/:userId', () => {
+  describe('GET /prescriptions/user/:userId', () => {
     test('Returns 200 status code and array of all prescriptions for the user with provided id', async () => {
       const res = await request(app)
-        .get('/api/prescriptions/627380e26aeedd08eac2e80c')
+        .get('/api/prescriptions/user/627380e26aeedd08eac2e80c')
         .expect(200);
       expect(res.body.prescriptions).toBeInstanceOf(Array);
       expect(res.body.prescriptions.length).toBe(3);
@@ -157,14 +157,14 @@ describe('PRESCRIPTION TESTS', () => {
     });
     test('Returns 200 status code and an empty array if no prescriptions found in the database for the user with valid id', async () => {
       const res = await request(app)
-        .get('/api/prescriptions/627381db9be1122140b91fbc')
+        .get('/api/prescriptions/user/627381db9be1122140b91fbc')
         .expect(200);
       expect(res.body.prescriptions).toBeInstanceOf(Array);
       expect(res.body.prescriptions.length).toBe(0);
     });
     test('Returns 400 status code if userId is not valid', async () => {
       const { body } = await request(app)
-        .get(`/api/prescriptions/notValidId15`)
+        .get(`/api/prescriptions/user/notValidId15`)
         .expect(400);
 
       expect(body.msg).toEqual('Invalid request');
@@ -172,7 +172,7 @@ describe('PRESCRIPTION TESTS', () => {
 
     test('Returns 404 status code if userId not in the database', async () => {
       const { body } = await request(app)
-        .get(`/api/prescriptions/6274368fa87c3f460c56a251`)
+        .get(`/api/prescriptions/user/6274368fa87c3f460c56a251`)
         .expect(404);
 
       expect(body.msg).toEqual(
@@ -260,6 +260,43 @@ describe('PRESCRIPTION TESTS', () => {
       const { body } = await request(app)
         .delete(`/api/prescriptions/627529debd8436b946d47e2c`)
         .expect(404);
+    });
+  });
+
+  describe('GET /prescriptions/:id', () => {
+    test('Returns 200 status code and a prescription object matching the provided id', async () => {
+      const id = data.prescriptions[1]._id.toString();
+      const { body } = await request(app)
+        .get(`/api/prescriptions/${id}`)
+        .expect(200);
+
+      expect(body.prescription).toMatchObject({
+        _id: data.prescriptions[1]._id.toString(),
+        name: data.prescriptions[1].name,
+        frequency: data.prescriptions[1].frequency,
+        dosage: data.prescriptions[1].dosage,
+        amount: data.prescriptions[1].amount,
+        firstPromptTime: data.prescriptions[1].firstPromptTime,
+        userId: data.prescriptions[1].userId,
+        notes: data.prescriptions[1].notes,
+      });
+    });
+    test('Returns 400 status code if prescription id is not valid', async () => {
+      const { body } = await request(app)
+        .get(`/api/prescriptions/notValidId15`)
+        .expect(400);
+
+      expect(body.msg).toEqual('Invalid request');
+    });
+
+    test('Returns 404 status code if prescription id not in the database', async () => {
+      const { body } = await request(app)
+        .get(`/api/prescriptions/62752daa741be03d7f390078`)
+        .expect(404);
+
+      expect(body.msg).toEqual(
+        `No prescription with id 62752daa741be03d7f390078 found in the database`
+      );
     });
   });
 });

@@ -73,15 +73,50 @@ exports.deletePrescriptionById = async (req, res, next) => {
       };
     }
 
-    const userExists = await Prescription.exists({ _id: id });
+    const prescriptionExists = await Prescription.exists({ _id: id });
 
-    if (userExists) {
+    if (prescriptionExists) {
       const deletedPrescription = await Prescription.deleteOne({ _id: id });
       res.status(204).json(deletedPrescription);
     } else {
       throw {
         status: 404,
-        msg: `No prescription with is ${id} found in the database`,
+        msg: `No prescription with id ${id} found in the database`,
+      };
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getPrescriptionById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    function isValidObjectId(id) {
+      if (ObjectId.isValid(id)) {
+        if (String(new ObjectId(id)) === id) return true;
+        return false;
+      }
+      return false;
+    }
+
+    if (!isValidObjectId(id)) {
+      throw {
+        status: 400,
+        msg: `Invalid request`,
+      };
+    }
+
+    const prescriptionExists = await Prescription.exists({ _id: id });
+
+    if (prescriptionExists) {
+      const prescription = await Prescription.findOne({ _id: id });
+      res.status(200).json({ prescription });
+    } else {
+      throw {
+        status: 404,
+        msg: `No prescription with id ${id} found in the database`,
       };
     }
   } catch (err) {
