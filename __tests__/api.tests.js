@@ -165,6 +165,24 @@ describe('USERS TESTS', () => {
       );
     });
   });
+  describe('DELETE /api/users/user/:id', () => {
+    test('Returns 204 status code and the user that was deleted', async () => {
+      const id = data.users[1]._id.toString();
+      const { body } = await request(app)
+        .delete(`/api/users/user/${id}`)
+        .expect(204);
+    });
+    test('Returns 400 status code if id is invalid', async () => {
+      const { body } = await request(app)
+        .delete(`/api/users/user/223344`)
+        .expect(400);
+    });
+    test('Returns 404 status code if id not in the database', async () => {
+      const { body } = await request(app)
+        .delete(`/api/users/user/627529debd8436b946d47e2c`)
+        .expect(404);
+    });
+  });
 });
 
 describe('PRESCRIPTION TESTS', () => {
