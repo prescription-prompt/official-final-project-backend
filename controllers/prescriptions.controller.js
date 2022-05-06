@@ -4,13 +4,16 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 exports.postPrescription = async (req, res, next) => {
   try {
-    const user = await User.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      password: req.body.password,
-      email: req.body.email,
+    const prescription = await Prescription.create({
+      name: req.body.name,
+      dosage: req.body.dosage,
+      frequency: req.body.frequency,
+      firstPromptTime: req.body.firstPromptTime,
+      notes: req.body.notes,
+      userId: req.body.userId,
+      amount: req.body.amount,
     });
-    res.status(201).json({ user });
+    res.status(201).json({ prescription });
   } catch (err) {
     next(err);
   }
