@@ -243,5 +243,13 @@ describe('PRESCRIPTION TESTS', () => {
           'Cast to Number failed for value "twenty-eight" (type string) at path "amount"',
       });
     });
+
+    describe('DELETE /api/prescriptions/:id', () => {
+      test('Returns 204 status code and the prescription that was deleted', async () => {
+        const { body } = await request(app)
+          .delete('/api/prescriptions/6274fcb87c40e70244f0ff38')
+          .expect(204);
+      });
+    });
   });
 });
