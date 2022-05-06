@@ -123,3 +123,53 @@ exports.getPrescriptionById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.patchPrescriptionById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, dosage, frequency, firstPromptTime, notes, userId, amount } =
+      req.body;
+
+    function isValidObjectId(id) {
+      if (ObjectId.isValid(id)) {
+        if (String(new ObjectId(id)) === id) return true;
+        return false;
+      }
+      return false;
+    }
+
+    if (!isValidObjectId(id)) {
+      throw {
+        status: 400,
+        msg: `Invalid request`,
+      };
+    }
+
+    const prescriptionExists = await Prescription.exists({ _id: id });
+
+    if (prescriptionExists) {
+      const prescription = await Prescription.findById({ _id: id });
+      const updatedPrescription = await Prescription.findByIdAndUpdate(
+        { _id: id },
+        {
+          name: name || prescription.name,
+          dosage: dosage || prescription.dosage,
+          frequency: frequency || prescription.frequency,
+          firstPromptTime: firstPromptTime || prescription.firstPromptTime,
+          notes: notes || prescription.notes,
+          amount: amount || prescription.amount,
+        },
+        { new: true, runValidators: true }
+      );
+
+      res.status(200).json({ updatedPrescription });
+    } else {
+      throw {
+        status: 404,
+        msg: `No prescription with id ${id} found in the database`,
+      };
+    }
+  } catch (err) {
+    next(err);
+  }
+};

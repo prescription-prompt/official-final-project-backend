@@ -14,6 +14,12 @@ exports.handleValidationErrors = (err, req, res, next) => {
   } else next(err);
 };
 
+exports.handleAssertionErrors = (err, req, res, next) => {
+  if (err.name === 'CastError') {
+    res.status(400).send({ msg: `Invalid ${err.path}: ${err.value}` });
+  } else next(err);
+};
+
 exports.handleServerErrors = (err, req, res, next) => {
   console.log(err);
   res.status(500).send({ msg: 'Internal Server Error' });

@@ -332,4 +332,66 @@ describe('PRESCRIPTION TESTS', () => {
       );
     });
   });
+
+  describe('PATCH /prescriptions/:id', () => {
+    test('Returns 200 status code and an updated prescription object matching the provided id', async () => {
+      const id = data.prescriptions[1]._id.toString();
+
+      const updatedPrescription = {
+        dosage: '3mg',
+        amount: 33,
+        notes: 'take with water',
+      };
+
+      const { body } = await request(app)
+        .patch(`/api/prescriptions/${id}`)
+        .send(updatedPrescription)
+        .expect(200);
+
+      expect(body.updatedPrescription).toMatchObject({
+        _id: data.prescriptions[1]._id.toString(),
+        name: data.prescriptions[1].name,
+        frequency: data.prescriptions[1].frequency,
+        dosage: '3mg',
+        amount: 33,
+        firstPromptTime: data.prescriptions[1].firstPromptTime,
+        userId: data.prescriptions[1].userId,
+        notes: 'take with water',
+      });
+    });
+    test('Returns 400 status code if prescription id is not valid', async () => {
+      const { body } = await request(app)
+        .get(`/api/prescriptions/notValidId15`)
+        .expect(400);
+
+      expect(body.msg).toEqual('Invalid request');
+    });
+
+    test('Returns 404 status code if prescription id not in the database', async () => {
+      const { body } = await request(app)
+        .get(`/api/prescriptions/62752daa741be03d7f390078`)
+        .expect(404);
+
+      expect(body.msg).toEqual(
+        `No prescription with id 62752daa741be03d7f390078 found in the database`
+      );
+    });
+
+    test('Returns 400 status code if body is not valid', async () => {
+      const id = data.prescriptions[1]._id.toString();
+
+      const updatedPrescription = {
+        dosage: '2mg',
+        amount: '33 tablets',
+        notes: 'take with water',
+      };
+
+      const { body } = await request(app)
+        .patch(`/api/prescriptions/${id}`)
+        .send(updatedPrescription)
+        .expect(400);
+
+      expect(body.msg).toEqual(`Invalid amount: 33 tablets`);
+    });
+  });
 });

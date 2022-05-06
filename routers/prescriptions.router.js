@@ -15,4 +15,9 @@ prescriptionsRouter.delete(
 
 prescriptionsRouter.get('/:id', controller.prescriptions.getPrescriptionById);
 
+prescriptionsRouter.patch(
+  '/:id',
+  controller.prescriptions.patchPrescriptionById
+);
+
 module.exports = prescriptionsRouter;
