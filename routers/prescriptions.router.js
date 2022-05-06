@@ -2,7 +2,7 @@ const controller = require('../controllers');
 const prescriptionsRouter = require('express').Router();
 
 prescriptionsRouter.get(
-  '/:userId',
+  '/user/:userId',
   controller.prescriptions.getPrescriptionsByUserId
 );
 
@@ -12,5 +12,7 @@ prescriptionsRouter.delete(
   '/:id',
   controller.prescriptions.deletePrescriptionById
 );
+
+prescriptionsRouter.get('/:id', controller.prescriptions.getPrescriptionById);
 
 module.exports = prescriptionsRouter;
