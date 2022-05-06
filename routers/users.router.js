@@ -7,4 +7,6 @@ usersRouter.get('/:email', controller.users.getUserByEmail);
 
 usersRouter.post('/', controller.users.postUser);
 
+usersRouter.get('/user/:id', controller.users.getUserById);
+
 module.exports = usersRouter;
