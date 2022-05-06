@@ -68,6 +68,33 @@ describe('USERS TESTS', () => {
         email: 'testymctestface@gmail.com',
       });
     });
+    test('Returns 400 status code if required body field is missing', async () => {
+      const newUser = {
+        lastName: 'McTestface',
+        password: 'testpassword',
+        email: 'testymctestface@gmail.com',
+      };
+      const { body } = await request(app)
+        .post(`/api/users/`)
+        .send(newUser)
+        .expect(400);
+      expect(body.errors).toEqual({ firstName: 'Please input first name' });
+    });
+    test('Returns 400 status code if required body field is invalid', async () => {
+      const newUser = {
+        firstName: 'Testy',
+        lastName: 'McTestface',
+        password: 'testpassword',
+        email: 'testymctestface@gmail',
+      };
+      const { body } = await request(app)
+        .post(`/api/users/`)
+        .send(newUser)
+        .expect(400);
+      expect(body.errors).toEqual({
+        email: 'Path `email` is invalid (testymctestface@gmail).',
+      });
+    });
   });
 
   describe('GET /api/users/:email', () => {
@@ -149,6 +176,70 @@ describe('PRESCRIPTION TESTS', () => {
       expect(body.msg).toEqual(
         `No user with userId 6274368fa87c3f460c56a251 found in the database`
       );
+    });
+  });
+
+  describe('POST /api/prescriptions/', () => {
+    test('Returns 201 status code and the posted prescription', async () => {
+      const newPrescription = {
+        name: 'Hydrochlorothiazide',
+        dosage: '25mg',
+        frequency: 86400,
+        firstPromptTime: 1651827,
+        notes: 'avoid alcohol',
+        userId: '627381e77acbb4cacbaeb67d',
+        amount: 32,
+      };
+      const { body } = await request(app)
+        .post(`/api/prescriptions/`)
+        .send(newPrescription)
+        .expect(201);
+      expect(body.prescription).toMatchObject({
+        _id: expect.any(String),
+        name: 'Hydrochlorothiazide',
+        dosage: '25mg',
+        frequency: 86400,
+        firstPromptTime: 1651827,
+        notes: 'avoid alcohol',
+        userId: '627381e77acbb4cacbaeb67d',
+        amount: 32,
+      });
+    });
+    test('Returns 400 status code if required body field is missing', async () => {
+      const newPrescription = {
+        frequency: 86400,
+        firstPromptTime: 1651827,
+        notes: 'avoid alcohol',
+        userId: '627381e77acbb4cacbaeb67d',
+        amount: 32,
+      };
+      const { body } = await request(app)
+        .post(`/api/prescriptions/`)
+        .send(newPrescription)
+        .expect(400);
+      expect(body.errors).toEqual({
+        dosage: 'Please input dosage',
+        name: 'Please input medication name',
+      });
+    });
+    test('Returns 400 status code if required body field is invalid', async () => {
+      const newPrescription = {
+        name: 'Hydrochlorothiazide',
+        dosage: '25mg',
+        frequency: 86400,
+        firstPromptTime: 1651827,
+        notes: 'avoid alcohol',
+        userId: '627381e77acbb4cacbaeb67d',
+        amount: 'twenty-eight',
+      };
+      const { body } = await request(app)
+        .post(`/api/prescriptions/`)
+        .send(newPrescription)
+        .expect(400);
+      expect(body.errors).toEqual({
+        amount:
+          'Cast to Number failed for value "twenty-eight" (type string) at path "amount"',
+      });
     });
   });
 });
