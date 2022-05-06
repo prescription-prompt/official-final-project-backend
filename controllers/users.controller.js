@@ -1,4 +1,5 @@
 const User = require('../models/users.model');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -46,6 +47,41 @@ exports.getUserByEmail = async (req, res, next) => {
     }
 
     res.status(200).json({ user });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    function isValidObjectId(id) {
+      if (ObjectId.isValid(id)) {
+        if (String(new ObjectId(id)) === id) return true;
+        return false;
+      }
+      return false;
+    }
+
+    if (!isValidObjectId(id)) {
+      throw {
+        status: 400,
+        msg: `Invalid request`,
+      };
+    }
+
+    const userExists = await User.exists({ _id: id });
+
+    if (userExists) {
+      const user = await User.findOne({ _id: id });
+      res.status(200).json({ user });
+    } else {
+      throw {
+        status: 404,
+        msg: `No user with id ${id} found in the database`,
+      };
+    }
   } catch (err) {
     next(err);
   }

@@ -132,6 +132,39 @@ describe('USERS TESTS', () => {
       );
     });
   });
+
+  describe('GET /users/user/:id', () => {
+    test('Returns 200 status code and a user object matching the provided id', async () => {
+      const { body } = await request(app)
+        .get(`/api/users/user/627380e26aeedd08eac2e80c`)
+        .expect(200);
+
+      expect(body.user).toMatchObject({
+        _id: '627380e26aeedd08eac2e80c',
+        firstName: 'Zeph',
+        lastName: 'Banks',
+        email: 'mi.tempor.lorem@yahoo.edu',
+        password: 'BDJ37KKA2LF',
+      });
+    });
+    test('Returns 400 status code if user id is not valid', async () => {
+      const { body } = await request(app)
+        .get(`/api/users/user/notValidId15`)
+        .expect(400);
+
+      expect(body.msg).toEqual('Invalid request');
+    });
+
+    test('Returns 404 status code if user id not in the database', async () => {
+      const { body } = await request(app)
+        .get(`/api/users/user/627533145ca91c4d76a9ac44`)
+        .expect(404);
+
+      expect(body.msg).toEqual(
+        `No user with id 627533145ca91c4d76a9ac44 found in the database`
+      );
+    });
+  });
 });
 
 describe('PRESCRIPTION TESTS', () => {
