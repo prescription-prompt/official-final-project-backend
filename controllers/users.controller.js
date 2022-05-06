@@ -86,3 +86,38 @@ exports.getUserById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    function isValidObjectId(id) {
+      if (ObjectId.isValid(id)) {
+        if (String(new ObjectId(id)) === id) return true;
+        return false;
+      }
+      return false;
+    }
+
+    if (!isValidObjectId(id)) {
+      throw {
+        status: 400,
+        msg: `Invalid request`,
+      };
+    }
+
+    const userExists = await User.exists({ _id: id });
+
+    if (userExists) {
+      const deletedUser = await User.deleteOne({ _id: id });
+      res.status(204).json();
+    } else {
+      throw {
+        status: 404,
+        msg: `No user with id ${id} found in the database`,
+      };
+    }
+  } catch (err) {
+    next(err);
+  }
+};
