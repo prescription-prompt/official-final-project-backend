@@ -8,4 +8,9 @@ prescriptionsRouter.get(
 
 prescriptionsRouter.post('/', controller.prescriptions.postPrescription);
 
+prescriptionsRouter.delete(
+  '/:id',
+  controller.prescriptions.deletePrescriptionById
+);
+
 module.exports = prescriptionsRouter;

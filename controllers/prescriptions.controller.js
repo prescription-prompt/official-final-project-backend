@@ -53,3 +53,13 @@ exports.getPrescriptionsByUserId = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deletePrescriptionById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedPrescription = await Prescription.deleteOne({ _id: id });
+    res.status(204).json(deletedPrescription);
+  } catch (err) {
+    next(err);
+  }
+};
